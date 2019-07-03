@@ -32,23 +32,23 @@ void	mandelbrot(t_fmlx *mlx, t_point coords, t_point zoom)
 	int i;
 	double tmp;
 
-	c.rl = coords.x / zoom.x + FRACT_XA;
-	c.im = coords.y / zoom.y + FRACT_YA;
+	c.rl = coords.x / zoom.x + mlx->xa;
+	c.im = coords.y / zoom.y + mlx->ya;
 	z.rl = 0;
 	z.im = 0;
 	tmp = 0;
 	i = 0;
-	while (((z.rl * z.rl) + (z.im * z.im)) < 4 && i < MAX_INTERACT)
+	while (((z.rl * z.rl) + (z.im * z.im)) < 4 && i < mlx->max_inter)
 	{
 		tmp = z.rl;
 		z.rl = (z.rl * z.rl) - (z.im * z.im) + c.rl;
 		z.im = 2 * z.im * tmp + c.im;
 		i++;
 	}
-	if (i == MAX_INTERACT)
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0xFFFFFF);
+	if (i == mlx->max_inter)
+		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0);
 	else
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), i * (0xFFFFFF / MAX_INTERACT));
+		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), (i * 255 / MAX_INTERACT));
 }
 
 void	disp_fractol(t_fmlx *mlx)
@@ -58,8 +58,8 @@ void	disp_fractol(t_fmlx *mlx)
 
 	coords.x = 0;
 	coords.y = 0;
-	zoom.x = SIMG_X / (FRACT_XB - FRACT_XA);
-	zoom.y = SIMG_Y / (FRACT_YB - FRACT_YA);
+	zoom.x = SIMG_X / (mlx->xb - mlx->xa);
+	zoom.y = SIMG_Y / (mlx->yb - mlx->ya);
 	while (coords.x < SIMG_X)
 	{
 		while (coords.y < SIMG_Y)
@@ -73,7 +73,7 @@ void	disp_fractol(t_fmlx *mlx)
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 }
 
-void	fdf_exit(t_fmlx *mlx)
+void	fractol_exit(t_fmlx *mlx)
 {
 	mlx_destroy_image(mlx->mlx, mlx->img);
 	mlx_destroy_window(mlx->mlx, mlx->win);
@@ -82,8 +82,18 @@ void	fdf_exit(t_fmlx *mlx)
 
 int		deal_key(int key, t_fmlx *mlx)
 {
-	if (key == 53)
-		fdf_exit(mlx);
+	if (key == 35)
+		mlx->max_inter += 2;
+	else if  (key == 37 && mlx->max_inter > 1)
+		mlx->max_inter -= 2;
+	else if (key == 125)
+	{
+		mlx->xa += 0.1;
+		mlx->ya -= 0.1;
+	}
+	else if (key == 53)
+		fractol_exit(mlx);
+	disp_fractol(mlx);
 	return (key);
 }
 
@@ -95,14 +105,19 @@ void	fractol(void)
 	int		endian;
 
 	if (!(ptr.mlx = mlx_init()))
-		fdf_exit(&ptr);
+		fractol_exit(&ptr);
 	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "fractol - ")))
-		fdf_exit(&ptr);
+		fractol_exit(&ptr);
 	if (!(ptr.img = mlx_new_image(ptr.mlx, SIMG_X, SIMG_Y)))
-		fdf_exit(&ptr);
+		fractol_exit(&ptr);
 	if (!(ptr.screen = mlx_get_data_addr(ptr.img, &bpp, &size_line, &endian)))
-		fdf_exit(&ptr);
+		fractol_exit(&ptr);
 	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
+	ptr.max_inter = 40;
+	ptr.xa = FRACT_XA;
+	ptr.xb = FRACT_XB;
+	ptr.ya = FRACT_YA;
+	ptr.yb = FRACT_YB;
 	disp_fractol(&ptr);
 	mlx_loop(ptr.mlx);
 }
