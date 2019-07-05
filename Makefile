@@ -19,7 +19,7 @@ SRC_PATH= src/
 OBJ_PATH= obj/
 
 INC_NAME= fractol.h
-SRC_NAME= main.c
+SRC_NAME= main.c zoom.c mandelbrot.c julia.c events.c
 OBJ_NAME= $(SRC_NAME:.c=.o)
 
 INC= -I inc/ -I libft/inc/ -I mlx/

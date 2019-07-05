@@ -42,11 +42,24 @@ typedef struct	s_fmlx
 	void			*img;
 	char			*screen;
 	char			fract;
-	double			xa;
-	double			xb;
-	double			ya;
-	double			yb;
+	double			xmin;
+	double			xmax;
+	double			ymin;
+	double			ymax;
+	double			zoom;
 	int				max_inter;
 }				t_fmlx;
+
+void	zoom_up(t_fmlx *mlx);
+void	zoom_down(t_fmlx *mlx);
+void	disp_fractol(t_fmlx *mlx);
+void	julia(t_fmlx *mlx, t_point coords, t_point zoom);
+void	init_julia(t_fmlx *mlx);
+void	mandelbrot(t_fmlx *mlx, t_point coords, t_point zoom);
+void	init_mandelbrot(t_fmlx *mlx);
+void	fill_pxl(char *image, int x, int y, int color);
+int		deal_key(int key, t_fmlx *mlx);
+int		test_mouse(int button, int x, int y, t_fmlx *mlx);
+void	fractol_exit(t_fmlx *mlx);
 
 #endif

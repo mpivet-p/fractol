@@ -25,78 +25,6 @@ void	fill_pxl(char *image, int x, int y, int color)
 	}
 }
 
-void	init_mandelbrot(t_fmlx *mlx)
-{
-	mlx->max_inter = 50;
-	mlx->xa = -2.1;
-	mlx->xb = 0.6;
-	mlx->ya = -1.2;
-	mlx->yb = 1.2;
-	mlx->fract = 'm';
-}
-
-void	init_julia(t_fmlx *mlx)
-{
-	mlx->max_inter = 50;
-	mlx->xa = -1;
-	mlx->xb = 1;
-	mlx->ya = -1.2;
-	mlx->yb = 1.2;
-	mlx->fract = 'j';
-}
-
-void	mandelbrot(t_fmlx *mlx, t_point coords, t_point zoom)
-{
-	t_cplx c;
-	t_cplx z;
-	int i;
-	double tmp;
-
-	c.rl = coords.x / zoom.x + mlx->xa;
-	c.im = coords.y / zoom.y + mlx->ya;
-	z.rl = 0;
-	z.im = 0;
-	tmp = 0;
-	i = 0;
-	while (((z.rl * z.rl) + (z.im * z.im)) < 4 && i < mlx->max_inter)
-	{
-		tmp = z.rl;
-		z.rl = (z.rl * z.rl) - (z.im * z.im) + c.rl;
-		z.im = 2 * z.im * tmp + c.im;
-		i++;
-	}
-	if (i == mlx->max_inter)
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0);
-	else
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0xFFFFFF);
-}
-
-void	julia(t_fmlx *mlx, t_point coords, t_point zoom)
-{
-	t_cplx c;
-	t_cplx z;
-	int i;
-	double tmp;
-
-	c.rl = 0.285;
-	c.im = 0.01;
-	z.rl = coords.x / zoom.x + mlx->xa;
-	z.im = coords.y / zoom.y + mlx->ya;
-	tmp = 0;
-	i = 0;
-	while (((z.rl * z.rl) + (z.im * z.im)) < 4 && i < mlx->max_inter)
-	{
-		tmp = z.rl;
-		z.rl = (z.rl * z.rl) - (z.im * z.im) + c.rl;
-		z.im = 2 * z.im * tmp + c.im;
-		i++;
-	}
-	if (i == mlx->max_inter)
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0);
-	else
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0xFFFFFF);
-}
-
 void	disp_fractol(t_fmlx *mlx)
 {
 	t_point coords;
@@ -104,8 +32,9 @@ void	disp_fractol(t_fmlx *mlx)
 
 	coords.x = 0;
 	coords.y = 0;
-	zoom.x = SIMG_X / (mlx->xb - mlx->xa);
-	zoom.y = SIMG_Y / (mlx->yb - mlx->ya);
+	zoom.x = SIMG_X / (mlx->xmax - mlx->xmin);
+	zoom.y = SIMG_Y / (mlx->ymax - mlx->ymin);
+	printf("%i\n", mlx_string_put(mlx->mlx, mlx->win, SIMG_X - 37, 5, 0xFFFFFF, "..."));
 	ft_bzero(mlx->screen, (SIMG_X * SIMG_Y) * 4);
 	while (coords.x < SIMG_X)
 	{
@@ -130,54 +59,6 @@ void	fractol_exit(t_fmlx *mlx)
 	exit(0);
 }
 
-int		deal_key(int key, t_fmlx *mlx)
-{
-	printf("key = %i\n", key);
-	if (key == 35)
-		mlx->max_inter += 2;
-	else if  (key == 37 && mlx->max_inter > 1)
-		mlx->max_inter -= 2;
-	else if (key == 53)
-		fractol_exit(mlx);
-	else if (key == 49)
-		init_mandelbrot(mlx);
-	disp_fractol(mlx);
-	return (key);
-}
-
-
-void	zoom_down(t_fmlx *mlx)
-{
-	mlx->max_inter += 1;
-	mlx->xa *= 0.9;
-	mlx->xb *= 0.9;
-	mlx->ya *= 0.9;
-	mlx->yb *= 0.9;
-	disp_fractol(mlx);
-}
-
-void	zoom_up(t_fmlx *mlx)
-{
-	mlx->max_inter += 1;
-	mlx->xa *= 1.1;
-	mlx->xb *= 1.1;
-	mlx->ya *= 1.1;
-	mlx->yb *= 1.1;
-	disp_fractol(mlx);
-}
-
-int		test_mouse(int button, int x, int y, t_fmlx *mlx)
-{
-	(void)mlx;
-	(void)x;
-	(void)y;
-	if (button == 5)
-		zoom_up(mlx);
-	if (button == 4)
-		zoom_down(mlx);
-	return (button);
-}
-
 void	fractol(char *name)
 {
 	t_fmlx	ptr;
@@ -199,8 +80,8 @@ void	fractol(char *name)
 		init_mandelbrot(&ptr);
 	else if (name && ft_strcmp(name, "julia") == 0)
 		init_julia(&ptr);
-//	else if (name && ft_strcmp(name, "mandelbrot") == 0)
-//		init_truc(&ptr);
+	//	else if (name && ft_strcmp(name, "mandelbrot") == 0)
+	//		init_truc(&ptr);
 	else
 		return ;
 	disp_fractol(&ptr);
@@ -210,8 +91,8 @@ void	fractol(char *name)
 int		main(int argc, char **argv)
 {
 	if (argc != 2 || (ft_strcmp(argv[1], "mandel") != 0
-					&& ft_strcmp(argv[1], "julia") != 0
-					&& ft_strcmp(argv[1], "koch") != 0))
+				&& ft_strcmp(argv[1], "julia") != 0
+				&& ft_strcmp(argv[1], "koch") != 0))
 	{
 		ft_putstr_fd("usage : fractol < mandel | julia | koch >\n", 2);
 		return (1);
