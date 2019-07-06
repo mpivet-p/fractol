@@ -1,14 +1,14 @@
 #include "fractol.h"
 
-void	mandelbrot(t_fmlx *mlx, t_point coords, t_point zoom)
+void	mandelbrot(t_fmlx *mlx, t_point coords)
 {
 	t_cplx c;
 	t_cplx z;
 	int i;
 	double tmp;
 
-	c.rl = coords.x / zoom.x + mlx->xmin;
-	c.im = coords.y / zoom.y + mlx->ymin;
+	c.rl = coords.x / mlx->zoom + mlx->xmin;
+	c.im = coords.y / mlx->zoom + mlx->ymin;
 	z.rl = 0;
 	z.im = 0;
 	tmp = 0;
@@ -33,6 +33,6 @@ void	init_mandelbrot(t_fmlx *mlx)
 	mlx->xmax = 0.6;
 	mlx->ymin = -1.2;
 	mlx->ymax = 1.2;
-	mlx->fract = 'm';
-	mlx->zoom = 1;
+	mlx->zoom = 100;
+	mlx->fract = FRACT_MANDEL;
 }

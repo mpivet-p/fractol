@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/04 00:56:50 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/06 03:00:36 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,22 @@ void	fill_pxl(char *image, int x, int y, int color)
 
 void	disp_fractol(t_fmlx *mlx)
 {
-	t_point coords;
-	t_point zoom;
+	static void	(*fractal[FRACT_NUM])(t_fmlx *mlx, t_point coords) = {mandelbrot, julia};
+	t_point		coords;
+	int			i;
 
 	coords.x = 0;
 	coords.y = 0;
-	zoom.x = SIMG_X / (mlx->xmax - mlx->xmin);
-	zoom.y = SIMG_Y / (mlx->ymax - mlx->ymin);
-	printf("%i\n", mlx_string_put(mlx->mlx, mlx->win, SIMG_X - 37, 5, 0xFFFFFF, "..."));
+	i = -1;
 	ft_bzero(mlx->screen, (SIMG_X * SIMG_Y) * 4);
 	while (coords.x < SIMG_X)
 	{
 		while (coords.y < SIMG_Y)
 		{
-			if (mlx->fract == 'm')
-				mandelbrot(mlx, coords, zoom);
-			if (mlx->fract == 'j')
-				julia(mlx, coords, zoom);
+			i = -1;
+			while (++i < FRACT_NUM)
+				if (i == mlx->fract)
+					fractal[i](mlx, coords);
 			coords.y++;
 		}
 		coords.y = 0;
@@ -59,7 +58,7 @@ void	fractol_exit(t_fmlx *mlx)
 	exit(0);
 }
 
-void	fractol(char *name)
+void	fractol(int type)
 {
 	t_fmlx	ptr;
 	int		bpp;
@@ -76,27 +75,41 @@ void	fractol(char *name)
 		fractol_exit(&ptr);
 	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
 	mlx_hook(ptr.win, 4, 0, test_mouse, &ptr);
-	if (name && ft_strcmp(name, "mandel") == 0)
+	if (type == FRACT_MANDEL)
 		init_mandelbrot(&ptr);
-	else if (name && ft_strcmp(name, "julia") == 0)
+	else if (type == FRACT_JULIA)
 		init_julia(&ptr);
-	//	else if (name && ft_strcmp(name, "mandelbrot") == 0)
-	//		init_truc(&ptr);
 	else
 		return ;
 	disp_fractol(&ptr);
 	mlx_loop(ptr.mlx);
 }
 
+int		get_fractal(char *name)
+{
+	static char *fractals[FRACT_NUM] = {"mandel", "julia"};
+	int i;
+
+	i = 0;
+	while (i < FRACT_NUM)
+	{
+		if (ft_strcmp(name, fractals[i]) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int		main(int argc, char **argv)
 {
-	if (argc != 2 || (ft_strcmp(argv[1], "mandel") != 0
-				&& ft_strcmp(argv[1], "julia") != 0
-				&& ft_strcmp(argv[1], "koch") != 0))
+	int type;
+
+	type = (argc == 2) ? get_fractal(argv[1]) : -1;
+	if (type == -1)
 	{
 		ft_putstr_fd("usage : fractol < mandel | julia | koch >\n", 2);
 		return (1);
 	}
-	fractol(argv[1]);
+	fractol(type);
 	return (0);
 }

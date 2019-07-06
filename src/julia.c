@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-void	julia(t_fmlx *mlx, t_point coords, t_point zoom)
+void	julia(t_fmlx *mlx, t_point coords)
 {
 	t_cplx c;
 	t_cplx z;
@@ -9,8 +9,8 @@ void	julia(t_fmlx *mlx, t_point coords, t_point zoom)
 
 	c.rl = 0.285;
 	c.im = 0.01;
-	z.rl = coords.x / zoom.x + mlx->xmin;
-	z.im = coords.y / zoom.y + mlx->ymin;
+	z.rl = coords.x / mlx->zoom + mlx->xmin;
+	z.im = coords.y / mlx->zoom + mlx->ymin;
 	tmp = 0;
 	i = 0;
 	while (((z.rl * z.rl) + (z.im * z.im)) < 4 && i < mlx->max_inter)
@@ -33,6 +33,6 @@ void	init_julia(t_fmlx *mlx)
 	mlx->xmax = 1;
 	mlx->ymin = -1.2;
 	mlx->ymax = 1.2;
-	mlx->fract = 'j';
-	mlx->zoom = 1;
+	mlx->zoom = 100;
+	mlx->fract = FRACT_JULIA;
 }

@@ -10,9 +10,9 @@ int		deal_key(int key, t_fmlx *mlx)
 		fractol_exit(mlx);
 	else if (key == 49)
 	{
-		if (mlx->fract == 'm')
+		if (mlx->fract == 0)
 			init_mandelbrot(mlx);
-		else if  (mlx->fract == 'j')
+		else if  (mlx->fract == 1)
 			init_julia(mlx);
 	}
 	else if (key == 125)
@@ -32,16 +32,14 @@ int		deal_key(int key, t_fmlx *mlx)
 int		test_mouse(int button, int x, int y, t_fmlx *mlx)
 {
 	(void)mlx;
-	(void)x;
-	(void)y;
 	if (button == 5)
 	{
-		zoom_up(mlx);
+		zoom_up(mlx, x, y);
 		mlx->zoom++;
 	}
 	if (button == 4)
 	{
-		zoom_down(mlx);
+		zoom_down(mlx, x, y);
 		mlx->zoom--;
 	}
 	return (button);
