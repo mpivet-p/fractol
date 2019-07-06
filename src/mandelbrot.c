@@ -29,10 +29,10 @@ void	mandelbrot(t_fmlx *mlx, t_point coords)
 void	init_mandelbrot(t_fmlx *mlx)
 {
 	mlx->max_inter = 50;
-	mlx->xmin = -2.1;
+	mlx->xmin = -2.7;
 	mlx->xmax = 0.6;
-	mlx->ymin = -1.2;
+	mlx->ymin = -1.7;
 	mlx->ymax = 1.2;
-	mlx->zoom = 100;
+	mlx->zoom = 250;
 	mlx->fract = FRACT_MANDEL;
 }

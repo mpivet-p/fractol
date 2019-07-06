@@ -15,16 +15,6 @@ int		deal_key(int key, t_fmlx *mlx)
 		else if  (mlx->fract == 1)
 			init_julia(mlx);
 	}
-	else if (key == 125)
-	{
-		mlx->ymin += 1 / (double)mlx->zoom; 
-		mlx->ymax += 1 / (double)mlx->zoom;
-	}
-	else if (key == 126)
-	{
-		mlx->ymin -= 1 / (double)mlx->zoom;
-		mlx->ymax -= 1 / (double)mlx->zoom;
-	}
 	disp_fractol(mlx);
 	return (key);
 }
