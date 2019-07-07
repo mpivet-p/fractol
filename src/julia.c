@@ -40,13 +40,11 @@ void	init_julia(t_fmlx *mlx)
 
 void	julia_edit(t_fmlx *mlx, int x, int y)
 {
-	double xmod;
-	double ymod;
+	double mod;
 
-	xmod = -1.5 + (3 * (double)x / SIMG_X);
-	ymod = -1.5 + (3 * (double)y / SIMG_Y);
-	mlx->julia.rl = xmod;
-	mlx->julia.im = ymod;
+	x += 680;
+	mod = -1 + (1.5 * (double)x / SIMG_X * 0.5);
+	mlx->julia.im = mod;
 	printf("%f %f\n", mlx->julia.rl, mlx->julia.im);
 	printf("%i %i \n", x, y);
 	disp_fractol(mlx);
