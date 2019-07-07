@@ -15,6 +15,8 @@ int		deal_key(int key, t_fmlx *mlx)
 		else if  (mlx->fract == 1)
 			init_julia(mlx);
 	}
+	else if (mlx->fract == FRACT_JULIA && key == 48)
+		mlx->julia_edit = (mlx->julia_edit == 1) ? 0 : 1;
 	disp_fractol(mlx);
 	return (key);
 }
@@ -33,4 +35,11 @@ int		test_mouse(int button, int x, int y, t_fmlx *mlx)
 		mlx->zoom--;
 	}
 	return (button);
+}
+
+int		mouse_move(int x, int y, t_fmlx *mlx)
+{
+	if (mlx->fract == FRACT_JULIA && mlx->julia_edit == 1)
+		julia_edit(mlx, x, y);
+	return (0);
 }

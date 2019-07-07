@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/06 05:13:57 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/07 03:09:43 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ void	fractol(int type)
 	int		size_line;
 	int		endian;
 
+	if (type == FRACT_MANDEL)
+		init_mandelbrot(&ptr);
+	else if (type == FRACT_JULIA)
+		init_julia(&ptr);
+	else
+		exit(1);
 	if (!(ptr.mlx = mlx_init()))
 		fractol_exit(&ptr);
 	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "fractol - ")))
@@ -75,12 +81,7 @@ void	fractol(int type)
 		fractol_exit(&ptr);
 	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
 	mlx_hook(ptr.win, 4, 0, test_mouse, &ptr);
-	if (type == FRACT_MANDEL)
-		init_mandelbrot(&ptr);
-	else if (type == FRACT_JULIA)
-		init_julia(&ptr);
-	else
-		return ;
+	mlx_hook(ptr.win, 6, 0, mouse_move, &ptr);
 	disp_fractol(&ptr);
 	mlx_loop(ptr.mlx);
 }
