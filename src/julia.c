@@ -33,8 +33,8 @@ void	init_julia(t_fmlx *mlx)
 	mlx->ymax = 1.2;
 	mlx->zoom = 250;
 	mlx->fract = FRACT_JULIA;
-	mlx->julia.rl = 0.285;
-	mlx->julia.im = 0.01;
+	mlx->julia.rl = -0.765;
+	mlx->julia.im = -0.07;
 	mlx->julia_edit = 0;
 }
 
@@ -43,16 +43,11 @@ void	julia_edit(t_fmlx *mlx, int x, int y)
 	double xmod;
 	double ymod;
 
-	x *= 0.55;
-	y *= 0.55;
-	xmod = log((x % (SIMG_X / 2)) / 10) / 5;
-	if (xmod < 0.01)
-		xmod = 0.01;
-	ymod = log((y % (SIMG_Y / 2)) / 15) / 10;
-	if (ymod < 0.01)
-		ymod = 0.01;
-	mlx->julia.rl = (x > (SIMG_X / 2)) ? xmod : xmod * -1 ;
-	mlx->julia.im = (y > (SIMG_Y / 2)) ? ymod : ymod * -1 ;
+	xmod = -1.5 + (3 * (double)x / SIMG_X);
+	ymod = -1.5 + (3 * (double)y / SIMG_Y);
+	mlx->julia.rl = xmod;
+	mlx->julia.im = ymod;
+	printf("%f %f\n", mlx->julia.rl, mlx->julia.im);
 	printf("%i %i \n", x, y);
 	disp_fractol(mlx);
 }

@@ -15,6 +15,10 @@ int		deal_key(int key, t_fmlx *mlx)
 		else if  (mlx->fract == 1)
 			init_julia(mlx);
 	}
+	else if (key == 46 && mlx->fract != FRACT_MANDEL)
+		init_mandelbrot(mlx);
+	else if (key == 38 && mlx->fract != FRACT_JULIA)
+		init_julia(mlx);
 	else if (mlx->fract == FRACT_JULIA && key == 48)
 		mlx->julia_edit = (mlx->julia_edit == 1) ? 0 : 1;
 	disp_fractol(mlx);
