@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 05:35:56 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/08 07:00:22 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	disp_fractol(t_fmlx *mlx)
 {
-	static void	(*fractal[FRACT_NUM])(t_fmlx *mlx, t_point coords) = {mandelbrot, julia, burningship};
+	static void	(*fractal[FRACT_NUM])(t_fmlx *mlx,
+			t_point coords) = {mandelbrot, julia, burningship};
 	t_point		coords;
 	int			i;
 
@@ -36,6 +37,7 @@ void	disp_fractol(t_fmlx *mlx)
 		coords.x++;
 	}
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+	print_ui(mlx);
 }
 
 void	fractol(int type)
@@ -50,11 +52,13 @@ void	fractol(int type)
 	func[type](&ptr);
 	if (!(ptr.mlx = mlx_init()))
 		fractol_exit(&ptr);
-	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "fractol by mpivet-p")))
+	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X,
+					SWIN_Y, "fractol by mpivet-p")))
 		fractol_exit(&ptr);
 	if (!(ptr.img = mlx_new_image(ptr.mlx, SIMG_X, SIMG_Y)))
 		fractol_exit(&ptr);
-	if (!(ptr.screen = mlx_get_data_addr(ptr.img, &(tools[0]), &(tools[1]), &(tools[2]))))
+	if (!(ptr.screen = mlx_get_data_addr(ptr.img, &(tools[0]),
+					&(tools[1]), &(tools[2]))))
 		fractol_exit(&ptr);
 	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
 	mlx_hook(ptr.win, 4, 0, mouse_roll, &ptr);
@@ -65,8 +69,8 @@ void	fractol(int type)
 
 int		get_fractal(char *name)
 {
-	static char *fractals[FRACT_NUM] = {"mandelbrot", "julia", "burningship"};
-	int i;
+	static char	*fractals[FRACT_NUM] = {"mandelbrot", "julia", "burningship"};
+	int			i;
 
 	i = 0;
 	while (i < FRACT_NUM)
@@ -85,7 +89,7 @@ int		main(int argc, char **argv)
 	type = (argc == 2) ? get_fractal(argv[1]) : -1;
 	if (type == -1)
 	{
-		ft_putstr_fd("usage : fractol < mandelbrot | julia | burningship >\n", 2);
+		ft_putstr_fd("usage: fractol <mandelbrot | julia | burningship>\n", 2);
 		return (1);
 	}
 	fractol(type);

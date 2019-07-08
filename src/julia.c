@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   julia.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/08 06:54:24 by mpivet-p          #+#    #+#             */
+/*   Updated: 2019/07/08 06:54:39 by mpivet-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 void	julia(t_fmlx *mlx, t_point coords)
 {
-	t_cplx c;
-	t_cplx z;
-	int i;
-	double tmp;
+	t_cplx	c;
+	t_cplx	z;
+	int		i;
+	double	tmp;
 
 	c.rl = mlx->julia.rl;
 	c.im = mlx->julia.im;

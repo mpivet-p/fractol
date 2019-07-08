@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 00:33:40 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 04:37:14 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/08 06:54:19 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	burningship(t_fmlx *mlx, t_point coords)
 {
-	t_cplx c;
-	t_cplx z;
-	int i;
-	double tmp;
+	t_cplx	c;
+	t_cplx	z;
+	int		i;
+	double	tmp;
 
 	c.rl = coords.x / mlx->zoom + mlx->xmin;
 	c.im = coords.y / mlx->zoom + mlx->ymin;

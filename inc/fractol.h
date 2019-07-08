@@ -6,12 +6,12 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 01:32:48 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 05:35:38 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/08 07:30:34 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef FRACTOL_H
+# define FRACTOL_H
 # define SWIN_X 1000
 # define SWIN_Y 800
 # define SIMG_X 1000
@@ -57,35 +57,24 @@ typedef struct	s_fmlx
 	int				julia_edit;
 }				t_fmlx;
 
-/******************************************************************/
-/*                             FRACTALS                           */
-/******************************************************************/
+void			julia(t_fmlx *mlx, t_point coords);
+void			mandelbrot(t_fmlx *mlx, t_point coords);
+void			burningship(t_fmlx *mlx, t_point coords);
+void			init_burningship(t_fmlx *mlx);
+void			init_julia(t_fmlx *mlx);
+void			init_mandelbrot(t_fmlx *mlx);
 
-void	julia(t_fmlx *mlx, t_point coords);
-void	mandelbrot(t_fmlx *mlx, t_point coords);
-void	burningship(t_fmlx *mlx, t_point coords);
-void	init_burningship(t_fmlx *mlx);
-void	init_julia(t_fmlx *mlx);
-void	init_mandelbrot(t_fmlx *mlx);
+int				deal_key(int key, t_fmlx *mlx);
+int				mouse_roll(int button, int x, int y, t_fmlx *mlx);
+int				mouse_move(int x, int y, t_fmlx *mlx);
+void			julia_edit(t_fmlx *mlx, int x, int y);
+void			zoom_up(t_fmlx *mlx, int x, int y);
+void			zoom_down(t_fmlx *mlx, int x, int y);
 
-/******************************************************************/
-/*                              EVENTS                            */
-/******************************************************************/
-
-int		deal_key(int key, t_fmlx *mlx);
-int		mouse_roll(int button, int x, int y, t_fmlx *mlx);
-int		mouse_move(int x, int y, t_fmlx *mlx);
-void	julia_edit(t_fmlx *mlx, int x, int y);
-void	zoom_up(t_fmlx *mlx, int x, int y);
-void	zoom_down(t_fmlx *mlx, int x, int y);
-
-/******************************************************************/
-/*                               TOOLS                            */
-/******************************************************************/
-
-void	fractol_exit(t_fmlx *mlx);
-int		get_color(t_fmlx *mlx, int i);
-void	fill_pxl(char *image, int x, int y, int color);
-void	disp_fractol(t_fmlx *mlx);
+void			fractol_exit(t_fmlx *mlx);
+int				get_color(t_fmlx *mlx, int i);
+void			fill_pxl(char *image, int x, int y, int color);
+void			disp_fractol(t_fmlx *mlx);
+void			print_ui(t_fmlx *mlx);
 
 #endif

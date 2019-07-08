@@ -1,10 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   events.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/08 06:54:43 by mpivet-p          #+#    #+#             */
+/*   Updated: 2019/07/08 07:16:03 by mpivet-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
+
+void	arrow_moves(t_fmlx *mlx, int key)
+{
+	if (key == 123)
+		mlx->xmin += (25 / mlx->zoom);
+	else if (key == 124)
+		mlx->xmin -= (25 / mlx->zoom);
+	else if (key == 125)
+		mlx->ymin -= (25 / mlx->zoom);
+	else if (key == 126)
+		mlx->ymin += (25 / mlx->zoom);
+}
 
 int		deal_key(int key, t_fmlx *mlx)
 {
 	if (key == 35)
 		mlx->max_inter += 2;
-	else if  (key == 37 && mlx->max_inter > 1)
+	else if (key == 37 && mlx->max_inter > 1)
 		mlx->max_inter -= 2;
 	else if (key == 53)
 		fractol_exit(mlx);
@@ -20,6 +44,8 @@ int		deal_key(int key, t_fmlx *mlx)
 		mlx->colors ^= 1;
 	else if (key == 71)
 		mlx->hide_ui ^= 1;
+	else
+		arrow_moves(mlx, key);
 	disp_fractol(mlx);
 	return (key);
 }

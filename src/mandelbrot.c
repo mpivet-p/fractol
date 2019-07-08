@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 00:33:50 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 04:36:26 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/08 06:56:25 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	mandelbrot(t_fmlx *mlx, t_point coords)
 {
-	t_cplx c;
-	t_cplx z;
-	int i;
-	double tmp;
+	t_cplx	c;
+	t_cplx	z;
+	double	tmp;
+	int		i;
 
 	c.rl = coords.x / mlx->zoom + mlx->xmin;
 	c.im = coords.y / mlx->zoom + mlx->ymin;
@@ -33,7 +33,8 @@ void	mandelbrot(t_fmlx *mlx, t_point coords)
 		i++;
 	}
 	if (i != mlx->max_inter)
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), get_color(mlx, i));
+		fill_pxl(mlx->screen, lround(coords.x),
+				lround(coords.y), get_color(mlx, i));
 }
 
 void	init_mandelbrot(t_fmlx *mlx)
