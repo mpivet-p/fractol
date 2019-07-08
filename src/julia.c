@@ -21,16 +21,15 @@ void	julia(t_fmlx *mlx, t_point coords)
 		i++;
 	}
 	if (i != mlx->max_inter)
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), 0xFFFFFF);
+		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y),
+				get_color(mlx, i));
 }
 
 void	init_julia(t_fmlx *mlx)
 {
 	mlx->max_inter = 60;
 	mlx->xmin = -2;
-	mlx->xmax = 1;
 	mlx->ymin = -1.65;
-	mlx->ymax = 1.2;
 	mlx->zoom = 250;
 	mlx->fract = FRACT_JULIA;
 	mlx->julia.rl = -0.765;
@@ -42,10 +41,9 @@ void	julia_edit(t_fmlx *mlx, int x, int y)
 {
 	double mod;
 
+	(void)y;
 	x += 680;
 	mod = -1 + (1.5 * (double)x / SIMG_X * 0.5);
 	mlx->julia.im = mod;
-	printf("%f %f\n", mlx->julia.rl, mlx->julia.im);
-	printf("%i %i \n", x, y);
 	disp_fractol(mlx);
 }

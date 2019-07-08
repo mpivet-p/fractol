@@ -6,28 +6,15 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/07 03:09:43 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/08 05:35:56 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	fill_pxl(char *image, int x, int y, int color)
-{
-	int i;
-
-	i = (((SIMG_X * y) + x) * 4);
-	if (x > 0 && y > 0 && x < SIMG_X && y < SIMG_Y)
-	{
-		image[i + 2] = (color >> 16) & 0xFF;
-		image[i + 1] = (color >> 8) & 0xFF;
-		image[i + 0] = color & 0xFF;
-	}
-}
-
 void	disp_fractol(t_fmlx *mlx)
 {
-	static void	(*fractal[FRACT_NUM])(t_fmlx *mlx, t_point coords) = {mandelbrot, julia};
+	static void	(*fractal[FRACT_NUM])(t_fmlx *mlx, t_point coords) = {mandelbrot, julia, burningship};
 	t_point		coords;
 	int			i;
 
@@ -51,36 +38,26 @@ void	disp_fractol(t_fmlx *mlx)
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 }
 
-void	fractol_exit(t_fmlx *mlx)
-{
-	mlx_destroy_image(mlx->mlx, mlx->img);
-	mlx_destroy_window(mlx->mlx, mlx->win);
-	exit(0);
-}
-
 void	fractol(int type)
 {
-	t_fmlx	ptr;
-	int		bpp;
-	int		size_line;
-	int		endian;
+	static void	(*func[FRACT_NUM + 1])(t_fmlx *mlx) = {init_mandelbrot,
+		init_julia, init_burningship, fractol_exit};
+	t_fmlx		ptr;
+	int			tools[3];
 
-	if (type == FRACT_MANDEL)
-		init_mandelbrot(&ptr);
-	else if (type == FRACT_JULIA)
-		init_julia(&ptr);
-	else
-		exit(1);
+	ptr.colors = 0;
+	ptr.hide_ui = 0;
+	func[type](&ptr);
 	if (!(ptr.mlx = mlx_init()))
 		fractol_exit(&ptr);
-	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "fractol - ")))
+	if (!(ptr.win = mlx_new_window(ptr.mlx, SWIN_X, SWIN_Y, "fractol by mpivet-p")))
 		fractol_exit(&ptr);
 	if (!(ptr.img = mlx_new_image(ptr.mlx, SIMG_X, SIMG_Y)))
 		fractol_exit(&ptr);
-	if (!(ptr.screen = mlx_get_data_addr(ptr.img, &bpp, &size_line, &endian)))
+	if (!(ptr.screen = mlx_get_data_addr(ptr.img, &(tools[0]), &(tools[1]), &(tools[2]))))
 		fractol_exit(&ptr);
 	mlx_hook(ptr.win, 2, 0, deal_key, &ptr);
-	mlx_hook(ptr.win, 4, 0, test_mouse, &ptr);
+	mlx_hook(ptr.win, 4, 0, mouse_roll, &ptr);
 	mlx_hook(ptr.win, 6, 0, mouse_move, &ptr);
 	disp_fractol(&ptr);
 	mlx_loop(ptr.mlx);
@@ -88,7 +65,7 @@ void	fractol(int type)
 
 int		get_fractal(char *name)
 {
-	static char *fractals[FRACT_NUM] = {"mandel", "julia"};
+	static char *fractals[FRACT_NUM] = {"mandelbrot", "julia", "burningship"};
 	int i;
 
 	i = 0;
@@ -108,7 +85,7 @@ int		main(int argc, char **argv)
 	type = (argc == 2) ? get_fractal(argv[1]) : -1;
 	if (type == -1)
 	{
-		ft_putstr_fd("usage : fractol < mandel | julia | koch >\n", 2);
+		ft_putstr_fd("usage : fractol < mandelbrot | julia | burningship >\n", 2);
 		return (1);
 	}
 	fractol(type);

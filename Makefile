@@ -6,7 +6,7 @@
 #    By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/22 02:45:47 by mpivet-p          #+#    #+#              #
-#    Updated: 2019/07/02 02:47:35 by mpivet-p         ###   ########.fr        #
+#    Updated: 2019/07/08 04:52:07 by mpivet-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC_PATH= src/
 OBJ_PATH= obj/
 
 INC_NAME= fractol.h
-SRC_NAME= main.c zoom.c mandelbrot.c julia.c events.c
+SRC_NAME= main.c zoom.c mandelbrot.c julia.c events.c burningship.c color.c tools.c
 OBJ_NAME= $(SRC_NAME:.c=.o)
 
 INC= -I inc/ -I libft/inc/ -I mlx/

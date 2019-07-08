@@ -8,26 +8,24 @@ int		deal_key(int key, t_fmlx *mlx)
 		mlx->max_inter -= 2;
 	else if (key == 53)
 		fractol_exit(mlx);
-	else if (key == 49)
-	{
-		if (mlx->fract == 0)
-			init_mandelbrot(mlx);
-		else if  (mlx->fract == 1)
-			init_julia(mlx);
-	}
-	else if (key == 46 && mlx->fract != FRACT_MANDEL)
+	else if ((key == 49 && mlx->fract == 0) || (key == 46 && mlx->fract != 0))
 		init_mandelbrot(mlx);
-	else if (key == 38 && mlx->fract != FRACT_JULIA)
+	else if ((key == 49 && mlx->fract == 1) || (key == 38 && mlx->fract != 1))
 		init_julia(mlx);
+	else if ((key == 49 && mlx->fract == 2) || (key == 11 && mlx->fract != 2))
+		init_burningship(mlx);
 	else if (mlx->fract == FRACT_JULIA && key == 48)
 		mlx->julia_edit = (mlx->julia_edit == 1) ? 0 : 1;
+	else if (key == 8)
+		mlx->colors ^= 1;
+	else if (key == 71)
+		mlx->hide_ui ^= 1;
 	disp_fractol(mlx);
 	return (key);
 }
 
-int		test_mouse(int button, int x, int y, t_fmlx *mlx)
+int		mouse_roll(int button, int x, int y, t_fmlx *mlx)
 {
-	(void)mlx;
 	if (button == 5)
 	{
 		zoom_up(mlx, x, y);

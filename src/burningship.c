@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*   burningship.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/08 00:33:50 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 04:36:26 by mpivet-p         ###   ########.fr       */
+/*   Created: 2019/07/08 00:33:40 by mpivet-p          #+#    #+#             */
+/*   Updated: 2019/07/08 04:37:14 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	mandelbrot(t_fmlx *mlx, t_point coords)
+void	burningship(t_fmlx *mlx, t_point coords)
 {
 	t_cplx c;
 	t_cplx z;
@@ -21,26 +21,27 @@ void	mandelbrot(t_fmlx *mlx, t_point coords)
 
 	c.rl = coords.x / mlx->zoom + mlx->xmin;
 	c.im = coords.y / mlx->zoom + mlx->ymin;
-	z.rl = 0;
-	z.im = 0;
+	z.rl = c.rl;
+	z.im = c.im;
 	tmp = 0;
 	i = 0;
 	while (((z.rl * z.rl) + (z.im * z.im)) < 4 && i < mlx->max_inter)
 	{
-		tmp = z.rl;
-		z.rl = (z.rl * z.rl) - (z.im * z.im) + c.rl;
-		z.im = 2 * z.im * tmp + c.im;
+		tmp = (z.rl * z.rl) - (z.im * z.im) + c.rl;
+		z.im = fabs(2 * z.rl * z.im) + c.im;
+		z.rl = fabs(tmp);
 		i++;
 	}
 	if (i != mlx->max_inter)
-		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y), get_color(mlx, i));
+		fill_pxl(mlx->screen, lround(coords.x), lround(coords.y),
+				get_color(mlx, i));
 }
 
-void	init_mandelbrot(t_fmlx *mlx)
+void	init_burningship(t_fmlx *mlx)
 {
-	mlx->max_inter = 50;
-	mlx->xmin = -2.7;
-	mlx->ymin = -1.7;
+	mlx->max_inter = 15;
+	mlx->xmin = -2.5;
+	mlx->ymin = -2;
 	mlx->zoom = 250;
-	mlx->fract = FRACT_MANDEL;
+	mlx->fract = FRACT_BURNING;
 }
