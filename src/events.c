@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 06:54:43 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 07:16:03 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 01:58:12 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ int		deal_key(int key, t_fmlx *mlx)
 		init_burningship(mlx);
 	else if (mlx->fract == FRACT_JULIA && key == 48)
 		mlx->julia_edit = (mlx->julia_edit == 1) ? 0 : 1;
-	else if (key == 8)
-		mlx->colors ^= 1;
+	else if (key == 8 && mlx->colors != 0)
+		mlx->colors = 0;
 	else if (key == 71)
 		mlx->hide_ui ^= 1;
+	else if (key == 8 || key == 69)
+		mlx->colors++;
 	else
 		arrow_moves(mlx, key);
 	disp_fractol(mlx);

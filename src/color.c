@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/08 01:47:35 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 07:02:41 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 01:56:55 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int		get_color(t_fmlx *mlx, int i)
 	i %= 225;
 	if (mlx->colors == 0)
 		return (0xFFFFFF);
-	red = (i * 5) * 3;
-	green = (255 - (i * 12)) * 3;
-	blue = (255 - (i * 2)) * 3;
+	red = (i * 5) * mlx->colors;
+	green = (255 - (i * 12)) * mlx->colors;
+	blue = (255 - (i * 2)) * mlx->colors;
 	return (((red & 0xFF) << 16) | ((green & 0xFF) << 8) | (blue & 0xFF));
 }
 

@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 01:32:48 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 07:30:34 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 01:52:35 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ typedef struct	s_fmlx
 	int				julia_edit;
 }				t_fmlx;
 
+/*
+**	================ /( )\ ================
+**	                FRACTALS
+**	================ \( )/ ================
+*/
+
 void			julia(t_fmlx *mlx, t_point coords);
 void			mandelbrot(t_fmlx *mlx, t_point coords);
 void			burningship(t_fmlx *mlx, t_point coords);
@@ -64,12 +70,24 @@ void			init_burningship(t_fmlx *mlx);
 void			init_julia(t_fmlx *mlx);
 void			init_mandelbrot(t_fmlx *mlx);
 
+/*
+**	================ /( )\ ================
+**	                EVENTS
+**	================ \( )/ ================
+*/
+
 int				deal_key(int key, t_fmlx *mlx);
 int				mouse_roll(int button, int x, int y, t_fmlx *mlx);
 int				mouse_move(int x, int y, t_fmlx *mlx);
 void			julia_edit(t_fmlx *mlx, int x, int y);
 void			zoom_up(t_fmlx *mlx, int x, int y);
 void			zoom_down(t_fmlx *mlx, int x, int y);
+
+/*
+**	================ /( )\ ================
+**	                 TOOLS
+**	================ \( )/ ================
+*/
 
 void			fractol_exit(t_fmlx *mlx);
 int				get_color(t_fmlx *mlx, int i);
