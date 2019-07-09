@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/09 05:55:00 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 05:57:26 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	*fractol_loop(void *ptr)
 		coords.x = i / SIMG_Y;
 		coords.y = i % SIMG_Y;
 		fractal[mlx->fract](mlx, coords);
-		i += 3;
+		i++;
 	}
-	pthread_exit(NULL);
+	return (NULL);
 }
 
 void	fractol(int type)
