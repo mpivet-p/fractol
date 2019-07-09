@@ -6,35 +6,16 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/09 05:47:59 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 05:55:00 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include "pthread.h"
 
 void	disp_fractol(t_fmlx *mlx)
 {
-	pthread_t	threads[3];
-	int			i;
-	t_fmlx		tab[3];
-
-	i = 0;
-	while (i < 3)
-	{
-		tab[i] = *mlx;
-		tab[i].start = i;
-		if (pthread_create(&(threads[i]), NULL, fractol_loop, &tab[i]) != 0)
-			fractol_exit(mlx);
-		i++;
-	}
-	i = 0;
-	while (i < 3)
-	{
-		if (pthread_join(threads[i], NULL) != 0)
-			fractol_exit(mlx);
-		i++;
-	}
+	mlx->start = 0;
+	fractol_loop(mlx);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 	print_ui(mlx);
 }
