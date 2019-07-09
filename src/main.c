@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/08 07:00:22 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 03:31:10 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,25 @@
 
 void	disp_fractol(t_fmlx *mlx)
 {
+	fractol_loop(mlx, 0);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+	print_ui(mlx);
+}
+
+void	fractol_loop(t_fmlx *mlx, int i)
+{
 	static void	(*fractal[FRACT_NUM])(t_fmlx *mlx,
 			t_point coords) = {mandelbrot, julia, burningship};
 	t_point		coords;
-	int			i;
 
-	coords.x = 0;
-	coords.y = 0;
-	i = -1;
 	ft_bzero(mlx->screen, (SIMG_X * SIMG_Y) * 4);
-	while (coords.x < SIMG_X)
+	while (i < SIMG_X * SIMG_Y)
 	{
-		while (coords.y < SIMG_Y)
-		{
-			i = -1;
-			while (++i < FRACT_NUM)
-				if (i == mlx->fract)
-					fractal[i](mlx, coords);
-			coords.y++;
-		}
-		coords.y = 0;
-		coords.x++;
+		coords.x = i / SIMG_Y;
+		coords.y = i % SIMG_Y;
+		fractal[mlx->fract](mlx, coords);
+		i++;
 	}
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
-	print_ui(mlx);
 }
 
 void	fractol(int type)
