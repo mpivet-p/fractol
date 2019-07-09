@@ -6,7 +6,7 @@
 #    By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/22 02:45:47 by mpivet-p          #+#    #+#              #
-#    Updated: 2019/07/09 05:03:27 by mpivet-p         ###   ########.fr        #
+#    Updated: 2019/07/09 05:54:10 by mpivet-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,15 +47,15 @@ local: $(OBJ)
 	@echo "$(RED)[fdf] : $(DEF)Compilation                   $(GRN)[OK]$(DEF)"
 
 multi:
-##	mv src/main.c src/maintmp.c
-##	mv src/multithreading.c src/main.c
+	mv src/main.c src/maintmp.c
+	mv src/multithreading.c src/main.c
 	@make fclean
 	@make -C libft
 	@make $(OBJ)
 	@gcc $(CFLAGS) -o $(NAME) $(OBJ) $(INC) $(LIBS) -lpthread $(MLX)
 	@echo "$(RED)[fdf] : $(DEF)Compilation                   $(GRN)[OK]$(DEF)"
-#	mv src/main.c src/multithreading.c
-#	mv src/maintmp.c src/main.c
+	mv src/main.c src/multithreading.c
+	mv src/maintmp.c src/main.c
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
