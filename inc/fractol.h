@@ -6,7 +6,7 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 01:32:48 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/09 03:29:43 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 04:15:55 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include "libft.h"
 # include "mlx.h"
 # include <math.h>
-# include <stdio.h>
 # include <fcntl.h>
 
 typedef enum	e_fractals
@@ -55,6 +54,7 @@ typedef struct	s_fmlx
 	int				fract;
 	int				max_inter;
 	int				julia_edit;
+	int				start;
 }				t_fmlx;
 
 /*
@@ -93,7 +93,7 @@ void			fractol_exit(t_fmlx *mlx);
 int				get_color(t_fmlx *mlx, int i);
 void			fill_pxl(char *image, int x, int y, int color);
 void			disp_fractol(t_fmlx *mlx);
-void			fractol_loop(t_fmlx *mlx, int i);
+void			fractol_loop(t_fmlx *mlx);
 void			print_ui(t_fmlx *mlx);
 
 #endif

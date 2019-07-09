@@ -6,15 +6,30 @@
 /*   By: mpivet-p <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 00:26:11 by mpivet-p          #+#    #+#             */
-/*   Updated: 2019/07/09 04:19:22 by mpivet-p         ###   ########.fr       */
+/*   Updated: 2019/07/09 04:15:48 by mpivet-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include "pthread.h"
 
 void	disp_fractol(t_fmlx *mlx)
 {
-	fractol_loop(mlx);
+	pthread_t	threads[3];
+	int			i;
+
+	i = 0;
+	while (i < 3)
+	{
+		mlx->start = i;
+		if (pthread_create(threads[i], NULL, fractol_loop, mlx) != 0)
+			fractol_exit(mlx);
+		i++;
+	}
+	i = -1;
+	while (++i < 3)
+		if (pthread_join(threads[i], NULL) != 0)
+			fdf_exit(mlx);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 	print_ui(mlx);
 }
@@ -26,15 +41,16 @@ void	fractol_loop(t_fmlx *mlx)
 	t_point		coords;
 	int			i;
 
-	i = 0;
+	i = mlx->start;
 	ft_bzero(mlx->screen, (SIMG_X * SIMG_Y) * 4);
 	while (i < SIMG_X * SIMG_Y)
 	{
 		coords.x = i / SIMG_Y;
 		coords.y = i % SIMG_Y;
 		fractal[mlx->fract](mlx, coords);
-		i++;
+		i += 3;
 	}
+	pthread_exit(NULL);
 }
 
 void	fractol(int type)
